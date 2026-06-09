@@ -449,8 +449,8 @@ body {
 }
 
 .modal-img {
-  height: 118px;
-  background: linear-gradient(135deg, rgba(212,175,55,0.04) 0%, rgba(212,175,55,0.01) 100%);
+  height: 160px;
+  background: #0e0e0e;
   border-bottom: 1px solid var(--hairline);
   display: flex;
   align-items: center;
@@ -459,19 +459,14 @@ body {
   overflow: hidden;
 }
 
-.modal-img::before {
-  content: '';
+.modal-img-photo {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 60% 80% at 60% 40%, rgba(212,175,55,0.06) 0%, transparent 70%);
-}
-
-.modal-img-label {
-  font-size: 0.58rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(168,162,158,0.35);
-  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
 .modal-body { padding: 22px 24px 24px; }
@@ -800,17 +795,17 @@ body {
     opacity: 1;
   }
 
-  /* Collapse image area to show handle */
-  .modal-img {
-    height: 32px;
-    border-bottom: none;
-    background: var(--bg-el);
-    flex-direction: column;
-    gap: 0;
+  /* Show image with handle floating on top */
+  .modal-img { height: 150px; border-bottom: none; }
+  .sheet-handle {
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    margin: 0;
   }
-  .modal-img::before { display: none; }
-  .modal-img-label { display: none; }
-  .sheet-handle { display: block; }
 
   /* ── Bottom sheet: confirmation ── */
   .confirm-overlay { align-items: flex-end; }
@@ -995,7 +990,7 @@ body {
   <div class="modal-card" id="modalCard">
     <div class="modal-img" aria-hidden="true">
       <div class="sheet-handle"></div>
-      <span class="modal-img-label">Vista de la zona</span>
+      <img id="modalImgEl" class="modal-img-photo" src="" alt="" loading="lazy">
     </div>
     <div class="modal-body">
       <div class="modal-zone-badge" id="modalBadge">Salón y Patio</div>
@@ -1187,6 +1182,15 @@ const OCC_LABELS = {
   amigos: 'Con amigos', negocios: 'Negocios', sin_ocasion: 'Sin ocasión',
 };
 
+/* ── TABLE → IMAGE MAP ──────────────────────────────── */
+const TABLE_IMG = {};
+[
+  ['images/salon-central.png',  [12,13,14,15,26,16]],
+  ['images/salon-lateral.png',  [23,24,22,21,17,18,20,19,8,7,6]],
+  ['images/patio-ventanal.png', [41,42,43,44,45]],
+  ['images/patio-fondo.png',    [30,1,31,32,2,5,4,9,50,3,10]],
+].forEach(([src, ids]) => ids.forEach(id => TABLE_IMG[id] = src));
+
 /* ── STATE ─────────────────────────────────────────── */
 let selTable = null;
 let curOcc   = null;
@@ -1315,6 +1319,10 @@ function openModal(id) {
   document.getElementById('modalDateCap').textContent  = t.cap <= 2 ? '2 personas' : `hasta ${t.cap} personas`;
   document.getElementById('modalVibeTag').textContent  = tag;
   document.getElementById('modalVibeText').textContent = detail;
+
+  const imgEl = document.getElementById('modalImgEl');
+  const imgSrc = TABLE_IMG[id];
+  if (imgSrc) { imgEl.src = imgSrc; imgEl.alt = `Vista del sector — Mesa ${id}`; }
 
   document.getElementById('modalBg').classList.add('open');
 }
