@@ -262,6 +262,18 @@ body {
   transition: background 0.3s;
 }
 
+/* ── MAP INTRO ──────────────────────────────────────── */
+.map-intro {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1rem, 2.2vw, 1.35rem);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--fg);
+  opacity: 0.72;
+  padding: 2px 0 10px;
+  letter-spacing: 0.01em;
+}
+
 /* ── MAP SECTION ────────────────────────────────────── */
 .map-section { flex: 1; display: flex; flex-direction: column; padding-bottom: 12px; }
 
@@ -901,6 +913,9 @@ body {
       Sincronizado con FUDO
     </button>
   </div>
+
+  <!-- MAP INTRO -->
+  <p class="map-intro">Reservá tu mesa donde más te guste</p>
 
   <!-- MAP -->
   <div class="map-section">
