@@ -76,22 +76,55 @@ body {
 .brand {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 5px;
 }
 
 .brand-row {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 12px;
+}
+
+.brand-logo {
+  height: 42px;
+  width: 42px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 6px rgba(212,175,55,0.2));
+}
+
+.brand-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.brand-thai {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.58rem;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+  line-height: 1;
 }
 
 .brand-name {
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 600;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.35em;
   color: var(--gold);
   text-transform: uppercase;
+  line-height: 1.05;
+}
+
+.brand-tagline {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-size: 0.72rem;
+  color: var(--gold);
+  letter-spacing: 0.06em;
+  opacity: 0.82;
+  line-height: 1;
 }
 
 .brand-sub { color: var(--muted); }
@@ -767,6 +800,10 @@ body {
   .hdr { grid-template-columns: 1fr; padding: 14px 0 12px; }
   .hdr-right { display: none; }
   .badge-pill { display: none; }
+  .brand-logo { height: 36px; width: 36px; }
+  .brand-name { font-size: 1.05rem; }
+  .brand-thai { font-size: 0.52rem; }
+  .brand-tagline { font-size: 0.65rem; }
 
   /* Occasion pills — horizontal scroll */
   .occasion-pills {
@@ -844,14 +881,13 @@ body {
   <header class="hdr">
     <div class="brand">
       <div class="brand-row">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M12 2C12 2 10 8 7.5 10.5C5 13 3.5 13.5 3.5 16C3.5 20 7.5 22 12 22C16.5 22 20.5 20 20.5 16C20.5 13.5 19 13 16.5 10.5C14 8 12 2 12 2Z"
-            fill="rgba(212,175,55,0.12)" stroke="#D4AF37" stroke-width="1.1" stroke-linejoin="round"/>
-          <circle cx="12" cy="16" r="2.2" fill="#D4AF37"/>
-        </svg>
-        <span class="brand-name">Khaosan</span>
+        <img src="images/logo.svg" alt="Khaosan logo" class="brand-logo" aria-hidden="true">
+        <div class="brand-stack">
+          <span class="brand-thai">ข้าวสาร</span>
+          <span class="brand-name">Khaosan</span>
+          <span class="brand-tagline">Thai Food</span>
+        </div>
       </div>
-      <span class="eyebrow brand-sub">Thai Food · Thai Select® · Córdoba</span>
     </div>
 
     <div class="hdr-center">

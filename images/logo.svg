@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 120 120" fill="none">
+  <defs>
+    <path id="wmTop" d="M 20 60 A 40 40 0 0 1 100 60" fill="none"/>
+    <path id="wmBot" d="M 23 60 A 37 37 0 0 0 97 60" fill="none"/>
+  </defs>
+  <g fill="#C9A227" stroke="#C9A227">
+    <!-- aros -->
+    <circle cx="60" cy="60" r="57.5" fill="none" stroke-width="2"/>
+    <circle cx="60" cy="60" r="49" fill="none" stroke-width="1" opacity="0.7"/>
+    <!-- texto en arco -->
+    <text fill="#C9A227" stroke="none" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" letter-spacing="3.2">
+      <textPath href="#wmTop" xlink:href="#wmTop" startOffset="50%" text-anchor="middle">KHAOSAN</textPath>
+    </text>
+    <text fill="#C9A227" stroke="none" font-family="Arial, Helvetica, sans-serif" font-size="9" font-weight="700" letter-spacing="4">
+      <textPath href="#wmBot" xlink:href="#wmBot" startOffset="50%" text-anchor="middle">THAI FOOD</textPath>
+    </text>
+    <!-- estrella superior -->
+    <circle cx="60" cy="20" r="1.6" stroke="none"/>
+    <!-- llama -->
+    <path stroke="none" d="M60 38
+      C 67 46, 67 52, 63 57
+      C 65.5 56, 66.5 53.5, 66.5 51
+      C 71 56, 71 63, 65.5 67
+      C 69 66, 71 63, 71.5 60
+      C 73.5 67, 69.5 74, 60 74
+      C 50.5 74, 46.5 67, 48.5 60
+      C 49 63, 51 66, 54.5 67
+      C 49 63, 49 56, 53.5 51
+      C 53.5 53.5, 54.5 56, 57 57
+      C 53 52, 53 46, 60 38 Z"/>
+    <!-- bowl -->
+    <path stroke="none" d="M42 78 H78 A18 18 0 0 1 42 78 Z"/>
+    <rect x="42" y="76" width="36" height="2.2" rx="1.1" stroke="none"/>
+    <!-- palillos cruzados -->
+    <line x1="82" y1="62" x2="70" y2="88" stroke-width="2.4" stroke-linecap="round"/>
+    <line x1="90" y1="66" x2="74" y2="90" stroke-width="2.4" stroke-linecap="round"/>
+  </g>
+</svg>
