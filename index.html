@@ -439,13 +439,11 @@ body {
   width: min(470px, 94vw);
   overflow: hidden;
   transform: translateY(18px) scale(0.97);
-  opacity: 0;
-  transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), opacity 0.28s ease;
+  transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
 }
 
 .modal-bg.open .modal-card {
   transform: translateY(0) scale(1);
-  opacity: 1;
 }
 
 .modal-img {
@@ -467,6 +465,7 @@ body {
   object-fit: cover;
   object-position: center;
   display: block;
+  transition: opacity 0.18s ease;
 }
 
 .modal-body { padding: 22px 24px 24px; }
@@ -778,24 +777,7 @@ body {
   /* Legend */
   .legend { flex-wrap: wrap; gap: 10px 18px; padding: 8px 0 0; }
 
-  /* ── Bottom sheet: modal ── */
-  .modal-bg { align-items: flex-end; }
-  .modal-card {
-    width: 100%;
-    max-width: 100%;
-    border-radius: 22px 22px 0 0;
-    max-height: 90dvh;
-    overflow-y: auto;
-    transform: translateY(100%);
-    opacity: 1;
-    -webkit-overflow-scrolling: touch;
-  }
-  .modal-bg.open .modal-card {
-    transform: translateY(0);
-    opacity: 1;
-  }
-
-  /* Show image with handle floating on top */
+  /* Image with handle floating on top */
   .modal-img { height: 150px; border-bottom: none; }
   .sheet-handle {
     display: block;
@@ -806,8 +788,22 @@ body {
     z-index: 2;
     margin: 0;
   }
+}
 
-  /* ── Bottom sheet: confirmation ── */
+/* ── Bottom sheet — modal + confirm (all touch devices) ── */
+@media (max-width: 768px) {
+  .modal-bg { align-items: flex-end; }
+  .modal-card {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 22px 22px 0 0;
+    max-height: 90dvh;
+    overflow-y: auto;
+    transform: translateY(100%);
+    -webkit-overflow-scrolling: touch;
+  }
+  .modal-bg.open .modal-card { transform: translateY(0); }
+
   .confirm-overlay { align-items: flex-end; }
   .confirm-card {
     max-width: 100%;
@@ -1322,7 +1318,14 @@ function openModal(id) {
 
   const imgEl = document.getElementById('modalImgEl');
   const imgSrc = TABLE_IMG[id];
-  if (imgSrc) { imgEl.src = imgSrc; imgEl.alt = `Vista del sector — Mesa ${id}`; }
+  if (imgSrc) {
+    imgEl.style.opacity = '0';
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      imgEl.src = imgSrc;
+      imgEl.alt = `Vista del sector — Mesa ${id}`;
+      imgEl.style.opacity = '1';
+    }));
+  }
 
   document.getElementById('modalBg').classList.add('open');
 }
@@ -1383,6 +1386,12 @@ function toggleOccasion(occ, el) {
 /* ── INIT ─────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   render(true);
+
+  // Preload table photos so they're in cache before any modal opens
+  ['images/salon-central.png','images/salon-lateral.png',
+   'images/patio-ventanal.png','images/patio-fondo.png'].forEach(s => {
+    const i = new Image(); i.src = s;
+  });
 
   document.querySelectorAll('.occ-pill').forEach(btn => {
     btn.addEventListener('click', () => toggleOccasion(btn.dataset.occ, btn));
