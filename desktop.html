@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khaosan Thai Food — Selección de Mesa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ─────────────────────────────────────────── */
+:root {
+  --bg:          #080808;
+  --bg-el:       #121212;
+  --glass:       rgba(20,20,20,0.62);
+  --gold:        #D4AF37;
+  --gold-lt:     #E5C158;
+  --gold-dk:     #8C6D1F;
+  --fg:          #F5F0E6;
+  --muted:       #A8A29E;
+  --hairline:    rgba(212,175,55,0.22);
+  --occ:         #2E2E2E;
+  --r-card:      18px;
+  --r-btn:       12px;
+  --r-pill:      999px;
+}
+
+/* ── RESET ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  background-image:
+    radial-gradient(ellipse 85% 55% at 28% 38%, rgba(26,26,26,0.9) 0%, transparent 68%),
+    radial-gradient(ellipse 60% 70% at 75% 72%, rgba(18,18,18,0.6) 0%, transparent 55%);
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+/* ── TYPOGRAPHY UTILS ───────────────────────────────── */
+.serif { font-family: 'Playfair Display', Georgia, serif; }
+.eyebrow {
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ── SHELL ──────────────────────────────────────────── */
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ── HEADER ─────────────────────────────────────────── */
+.hdr {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 20px 0 18px;
+  border-bottom: 1px solid var(--hairline);
+  gap: 16px;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.brand-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.brand-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.brand-sub { color: var(--muted); }
+
+.hdr-center { text-align: center; }
+
+.hdr-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.15rem, 2.2vw, 1.7rem);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+}
+
+.hdr-sub { margin-top: 3px; color: var(--muted); }
+
+.hdr-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-pill);
+  padding: 7px 14px;
+  font-size: 0.78rem;
+  color: var(--fg);
+  background: rgba(212,175,55,0.05);
+  white-space: nowrap;
+}
+
+.pill svg { color: var(--gold); flex-shrink: 0; }
+
+.badge-pill {
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid rgba(168,162,158,0.18);
+  border-radius: var(--r-pill);
+  padding: 5px 12px;
+}
+
+/* ── OCCASION BAR ───────────────────────────────────── */
+.occasion-bar {
+  padding: 14px 0 2px;
+}
+
+.section-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 9px;
+}
+
+.occasion-pills {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.occ-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-pill);
+  padding: 7px 16px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.76rem;
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color 0.18s, color 0.18s, background 0.18s;
+  white-space: nowrap;
+}
+
+.occ-pill:hover { border-color: var(--gold); color: var(--fg); }
+
+.occ-pill:focus-visible {
+  outline: 1.5px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.occ-pill.active {
+  background: rgba(212,175,55,0.1);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.occ-icon { font-style: normal; font-size: 0.82rem; }
+
+/* ── ZONE ROW ───────────────────────────────────────── */
+.zone-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0 10px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.zone-tabs {
+  display: flex;
+  gap: 3px;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-pill);
+  padding: 3px;
+}
+
+.zone-tab {
+  background: transparent;
+  border: none;
+  border-radius: var(--r-pill);
+  padding: 7px 20px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.76rem;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+
+.zone-tab:hover:not(.active) { color: var(--fg); }
+
+.zone-tab.active {
+  background: rgba(212,175,55,0.12);
+  color: var(--gold);
+  border: 1px solid var(--hairline);
+}
+
+.zone-tab:focus-visible {
+  outline: 1.5px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.fudo-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid rgba(168,162,158,0.15);
+  border-radius: var(--r-pill);
+  padding: 6px 13px;
+  background: transparent;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.fudo-btn:hover { border-color: var(--hairline); color: var(--fg); }
+
+.fudo-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #4ade80;
+  transition: background 0.3s;
+}
+
+/* ── MAP SECTION ────────────────────────────────────── */
+.map-section { flex: 1; display: flex; flex-direction: column; padding-bottom: 12px; }
+
+.map-wrap {
+  position: relative;
+  background: var(--bg-el);
+  border: 1px solid var(--hairline);
+  border-radius: 22px;
+  overflow: hidden;
+  flex: 1;
+  min-height: clamp(380px, 60vh, 680px);
+}
+
+.map-zone {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.32s ease;
+}
+
+.map-zone.hidden { opacity: 0; pointer-events: none; }
+.map-zone.visible { opacity: 1; pointer-events: all; }
+
+/* SVG */
+.floor-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Table shapes — transform-box for clean scale animations */
+.t-shape {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.t-grp { cursor: pointer; }
+.t-grp.occupied { cursor: not-allowed; }
+
+.t-grp:not(.occupied):hover .t-shape {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 3.5px rgba(212,175,55,0.65));
+}
+
+.t-grp:focus-visible .t-shape {
+  filter: drop-shadow(0 0 4px rgba(212,175,55,0.85));
+}
+
+.t-grp.selected .t-shape {
+  animation: tbl-pulse 1.6s ease-in-out infinite;
+}
+
+.t-grp.last-avail .t-shape {
+  animation: last-avail-glow 2.2s ease-in-out infinite;
+}
+
+/* Stagger-in */
+.t-grp { animation: stagger-in 0.45s ease both; }
+
+@keyframes tbl-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.035); }
+}
+
+@keyframes last-avail-glow {
+  0%, 100% { filter: drop-shadow(0 0 2.5px rgba(229,193,88,0.45)); }
+  50% { filter: drop-shadow(0 0 7px rgba(229,193,88,0.85)); }
+}
+
+@keyframes stagger-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Gallery coming-soon */
+.gallery-coming {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 40px;
+}
+
+.gallery-icon-wrap {
+  width: 52px;
+  height: 52px;
+  border: 1px solid var(--hairline);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  background: rgba(212,175,55,0.04);
+}
+
+.gallery-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  text-align: center;
+}
+
+.gallery-sub {
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.65;
+  text-align: center;
+  max-width: 360px;
+}
+
+.gallery-tag {
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-pill);
+  padding: 6px 15px;
+}
+
+/* ── LEGEND ─────────────────────────────────────────── */
+.legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  padding: 11px 0 0;
+}
+
+.leg-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.7rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.leg-dot {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+}
+
+.leg-dot.avail { border-radius: 50%; background: transparent; border: 1.5px solid var(--gold); }
+.leg-dot.occ { border-radius: 2px; background: var(--occ); border: 1.5px solid rgba(168,162,158,0.18); }
+.leg-dot.sel { border-radius: 50%; background: var(--gold); border: 1.5px solid var(--gold-lt); }
+.leg-dot.lastav { border-radius: 50%; background: transparent; border: 1.5px solid var(--gold-lt); box-shadow: 0 0 5px rgba(229,193,88,0.55); }
+
+/* ── MODAL ──────────────────────────────────────────── */
+.modal-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(8,8,8,0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+
+.modal-bg.open { opacity: 1; pointer-events: all; }
+
+.modal-card {
+  background: var(--glass);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid var(--hairline);
+  border-radius: 22px;
+  width: min(470px, 94vw);
+  overflow: hidden;
+  transform: translateY(18px) scale(0.97);
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), opacity 0.28s ease;
+}
+
+.modal-bg.open .modal-card {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.modal-img {
+  height: 118px;
+  background: linear-gradient(135deg, rgba(212,175,55,0.04) 0%, rgba(212,175,55,0.01) 100%);
+  border-bottom: 1px solid var(--hairline);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.modal-img::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 60% 40%, rgba(212,175,55,0.06) 0%, transparent 70%);
+}
+
+.modal-img-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(168,162,158,0.35);
+  position: relative;
+}
+
+.modal-body { padding: 22px 24px 24px; }
+
+.modal-zone-badge {
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 5px;
+}
+
+.modal-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.55rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.modal-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.modal-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.74rem;
+  color: var(--muted);
+}
+
+.modal-meta-item svg { color: var(--gold); opacity: 0.75; }
+
+.modal-vibe-card {
+  background: rgba(212,175,55,0.055);
+  border: 1px solid var(--hairline);
+  border-radius: 11px;
+  padding: 11px 14px;
+  margin-bottom: 13px;
+}
+
+.vibe-tag-pill {
+  display: inline-block;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(212,175,55,0.1);
+  border-radius: var(--r-pill);
+  padding: 3px 9px;
+  margin-bottom: 7px;
+}
+
+.vibe-text {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.modal-date-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.73rem;
+  color: var(--muted);
+  background: rgba(255,255,255,0.022);
+  border-radius: 9px;
+  padding: 8px 12px;
+  margin-bottom: 18px;
+}
+
+.sep { color: rgba(212,175,55,0.3); }
+
+.modal-actions { display: flex; flex-direction: column; gap: 9px; }
+
+.btn-gold {
+  width: 100%;
+  background: var(--gold);
+  color: #080808;
+  border: none;
+  border-radius: var(--r-btn);
+  padding: 13px 24px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.86rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.18s, transform 0.1s;
+}
+
+.btn-gold::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.14) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+.btn-gold:hover { background: var(--gold-lt); transform: translateY(-1px); }
+.btn-gold:active { transform: translateY(0); }
+.btn-gold:focus-visible { outline: 2px solid var(--gold-lt); outline-offset: 2px; }
+
+.btn-outline {
+  width: 100%;
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-btn);
+  padding: 11px 24px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.83rem;
+  cursor: pointer;
+  transition: border-color 0.18s, background 0.18s;
+}
+
+.btn-outline:hover { border-color: var(--gold); background: rgba(212,175,55,0.05); }
+.btn-outline:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* ── CONFIRMATION ───────────────────────────────────── */
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8,8,8,0.9);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.38s ease;
+}
+
+.confirm-overlay.open { opacity: 1; pointer-events: all; }
+
+.confirm-card {
+  text-align: center;
+  max-width: 420px;
+  padding: 44px 32px;
+  width: 94vw;
+  animation: none;
+}
+
+.confirm-overlay.open .confirm-card { animation: card-emerge 0.5s cubic-bezier(0.22,1,0.36,1) both; }
+
+@keyframes card-emerge {
+  from { transform: translateY(24px) scale(0.96); opacity: 0; }
+  to   { transform: translateY(0) scale(1);       opacity: 1; }
+}
+
+/* Sparkle ring */
+.spark-ring {
+  width: 76px;
+  height: 76px;
+  margin: 0 auto 22px;
+  position: relative;
+}
+
+.spark-ring svg { width: 100%; height: 100%; }
+
+.spark {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.spark:nth-child(1) { top: -2px;  left: 50%; transform: translateX(-50%); animation: spark-anim 2s 0s    ease-in-out infinite; }
+.spark:nth-child(2) { top: 8%;    right: 5%; animation: spark-anim 2s 0.25s ease-in-out infinite; }
+.spark:nth-child(3) { top: 50%;   right:-3%; transform: translateY(-50%); animation: spark-anim 2s 0.5s  ease-in-out infinite; }
+.spark:nth-child(4) { bottom: 8%; right: 5%; animation: spark-anim 2s 0.75s ease-in-out infinite; }
+.spark:nth-child(5) { bottom:-2px; left:50%; transform: translateX(-50%); animation: spark-anim 2s 1s    ease-in-out infinite; }
+.spark:nth-child(6) { bottom: 8%; left: 5%; animation: spark-anim 2s 1.25s ease-in-out infinite; }
+.spark:nth-child(7) { top: 50%;   left:-3%; transform: translateY(-50%); animation: spark-anim 2s 1.5s  ease-in-out infinite; }
+.spark:nth-child(8) { top: 8%;    left: 5%; animation: spark-anim 2s 1.75s ease-in-out infinite; }
+
+@keyframes spark-anim {
+  0%, 100% { opacity: 0; transform: scale(0.3); }
+  45%, 55% { opacity: 1; transform: scale(1); }
+}
+
+.confirm-eyebrow {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.confirm-h {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.6rem, 4vw, 2.1rem);
+  font-weight: 400;
+  line-height: 1.18;
+  margin-bottom: 5px;
+}
+
+.confirm-sub {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+
+.confirm-summary {
+  background: rgba(212,175,55,0.05);
+  border: 1px solid var(--hairline);
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin-bottom: 22px;
+  text-align: left;
+}
+
+.confirm-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 0.8rem;
+  border-bottom: 1px solid rgba(212,175,55,0.07);
+}
+
+.confirm-row:last-child { border-bottom: none; }
+.c-label { color: var(--muted); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.c-val { color: var(--fg); font-weight: 500; }
+
+.confirm-actions { display: flex; flex-direction: column; gap: 10px; }
+
+.btn-confirm-close {
+  background: var(--gold);
+  color: #080808;
+  border: none;
+  border-radius: var(--r-btn);
+  padding: 13px 32px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+.btn-confirm-close:hover { background: var(--gold-lt); }
+
+.btn-new {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 0.76rem;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: rgba(168,162,158,0.25);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.btn-new:hover { color: var(--fg); }
+
+/* ── RESPONSIVE ─────────────────────────────────────── */
+@media (max-width: 900px) {
+  .shell { padding: 0 18px; }
+  .hdr { grid-template-columns: auto 1fr; }
+  .hdr-center { display: none; }
+}
+
+@media (max-width: 600px) {
+  .shell { padding: 0 14px; }
+  .hdr { grid-template-columns: 1fr; }
+  .hdr-right { display: none; }
+  .badge-pill { display: none; }
+  .occasion-pills { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; }
+  .occasion-pills::-webkit-scrollbar { display: none; }
+}
+</style>
+</head>
+
+<body>
+<div class="shell">
+
+  <!-- HEADER -->
+  <header class="hdr">
+    <div class="brand">
+      <div class="brand-row">
+        <!-- Flame logomark -->
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 2C12 2 10 8 7.5 10.5C5 13 3.5 13.5 3.5 16C3.5 20 7.5 22 12 22C16.5 22 20.5 20 20.5 16C20.5 13.5 19 13 16.5 10.5C14 8 12 2 12 2Z"
+            fill="rgba(212,175,55,0.12)" stroke="#D4AF37" stroke-width="1.1" stroke-linejoin="round"/>
+          <circle cx="12" cy="16" r="2.2" fill="#D4AF37"/>
+        </svg>
+        <span class="brand-name">Khaosan</span>
+      </div>
+      <span class="eyebrow brand-sub">Thai Food · Thai Select® · Córdoba</span>
+    </div>
+
+    <div class="hdr-center">
+      <h1 class="hdr-title serif">Elegí tu Lugar en Khaosan</h1>
+      <p class="hdr-sub eyebrow">Auténticos sabores del sudeste asiático</p>
+    </div>
+
+    <div class="hdr-right">
+      <div class="pill" aria-label="Fecha de reserva">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="18" rx="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        Vie 13 Jun · 21:00
+      </div>
+      <div class="badge-pill">2 personas</div>
+    </div>
+  </header>
+
+  <!-- OCCASION BAR -->
+  <section class="occasion-bar" aria-label="Selector de ocasión">
+    <p class="section-label">¿Qué estás celebrando?</p>
+    <div class="occasion-pills" role="group" aria-label="Tipo de ocasión">
+      <button class="occ-pill" data-occ="romantica" aria-pressed="false">
+        <span class="occ-icon" aria-hidden="true">♥</span> Cena romántica
+      </button>
+      <button class="occ-pill" data-occ="cumpleanos" aria-pressed="false">
+        <span class="occ-icon" aria-hidden="true">✦</span> Cumpleaños
+      </button>
+      <button class="occ-pill" data-occ="amigos" aria-pressed="false">
+        <span class="occ-icon" aria-hidden="true">◈</span> Con amigos
+      </button>
+      <button class="occ-pill" data-occ="negocios" aria-pressed="false">
+        <span class="occ-icon" aria-hidden="true">○</span> Negocios
+      </button>
+      <button class="occ-pill" data-occ="sin_ocasion" aria-pressed="false">
+        Sin ocasión
+      </button>
+    </div>
+  </section>
+
+  <!-- ZONE ROW -->
+  <div class="zone-row">
+    <div class="zone-tabs" role="tablist" aria-label="Zonas del restaurante">
+      <button class="zone-tab active" role="tab" aria-selected="true"
+        id="tab-salon" data-zone="salon">
+        Salón y Patio
+      </button>
+      <button class="zone-tab" role="tab" aria-selected="false"
+        id="tab-galeria" data-zone="galeria">
+        Galería Techada
+      </button>
+    </div>
+
+    <button class="fudo-btn" id="fudoBtn" aria-label="Estado de sincronización con FUDO">
+      <span class="fudo-dot" id="fudoDot"></span>
+      Sincronizado con FUDO
+    </button>
+  </div>
+
+  <!-- MAP -->
+  <div class="map-section">
+    <div class="map-wrap" id="mapWrap" role="region" aria-label="Plano del restaurante">
+
+      <!-- ZONE: SALÓN Y PATIO -->
+      <div class="map-zone visible" id="zone-salon" role="tabpanel" aria-labelledby="tab-salon">
+        <svg class="floor-svg" id="floorSVG"
+          viewBox="-4 -2 110 94"
+          preserveAspectRatio="xMidYMid meet"
+          role="img"
+          aria-label="Plano interactivo — Salón y Patio">
+          <defs>
+            <radialGradient id="roomAmbient" cx="50%" cy="45%" r="65%">
+              <stop offset="0%" stop-color="#1C1C1C" stop-opacity="1"/>
+              <stop offset="100%" stop-color="#0E0E0E" stop-opacity="1"/>
+            </radialGradient>
+            <filter id="glow-filter" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="1.2" result="blur"/>
+              <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+            </filter>
+          </defs>
+
+          <!-- Floor fill -->
+          <rect x="-4" y="-2" width="110" height="94" fill="url(#roomAmbient)"/>
+
+          <!-- Khaosan watermark -->
+          <g opacity="0.038" transform="translate(26, 18)" aria-hidden="true">
+            <path d="M22 2C22 2 18 14 13 18C8 22 5 22 5 27C5 37 12 41 22 44C32 41 39 37 39 27C39 22 36 22 31 18C26 14 22 2 22 2Z" fill="#D4AF37"/>
+            <circle cx="22" cy="29" r="5" fill="none" stroke="#D4AF37" stroke-width="1.2"/>
+          </g>
+
+          <!-- Room boundary -->
+          <rect x="0" y="0" width="96" height="88" rx="1.5"
+            fill="none" stroke="rgba(212,175,55,0.07)" stroke-width="0.5"/>
+
+          <!-- Salon zone background -->
+          <rect x="0" y="0" width="54" height="88" fill="rgba(212,175,55,0.009)" rx="0"/>
+          <!-- Salon / Patio zone separator -->
+          <line x1="54" y1="0" x2="54" y2="88"
+            stroke="rgba(212,175,55,0.07)" stroke-width="0.35" stroke-dasharray="1.5,2.2"/>
+
+          <!-- Zone labels -->
+          <text font-family="Inter,system-ui" font-size="2" letter-spacing="0.5"
+            fill="rgba(245,240,230,0.18)" transform="translate(3.5, 65) rotate(-90)">SALÓN</text>
+          <text font-family="Inter,system-ui" font-size="2" letter-spacing="0.5"
+            fill="rgba(245,240,230,0.14)" transform="translate(99, 52) rotate(90)">PATIO EXTERIOR</text>
+
+          <!-- Entrance arch — patio, centro-derecha -->
+          <path d="M 57,88 Q 65,83 73,88"
+            fill="none" stroke="rgba(212,175,55,0.2)" stroke-width="0.6"/>
+          <text x="65" y="91.5" text-anchor="middle"
+            font-family="Inter,system-ui" font-size="2" letter-spacing="0.5"
+            fill="rgba(245,240,230,0.2)">ENTRADA</text>
+
+          <!-- Tables rendered by JS -->
+          <g id="tablesGroup" role="group" aria-label="Mesas disponibles"></g>
+        </svg>
+      </div>
+
+      <!-- ZONE: GALERÍA TECHADA -->
+      <div class="map-zone hidden" id="zone-galeria" role="tabpanel" aria-labelledby="tab-galeria">
+        <div class="gallery-coming">
+          <div class="gallery-icon-wrap" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+              <path d="M2 20V9L12 3L22 9V20Z"/>
+              <rect x="9" y="13" width="6" height="7"/>
+            </svg>
+          </div>
+          <h2 class="gallery-title serif">Galería Techada</h2>
+          <p class="gallery-sub">Íntima y al resguardo — nuestra galería techada estará disponible muy pronto. Una experiencia diferente, en el mismo espíritu de Khaosan Road.</p>
+          <span class="gallery-tag" role="note">Planta en desarrollo · Próximamente</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- LEGEND -->
+    <div class="legend" role="note" aria-label="Leyenda del mapa">
+      <div class="leg-item"><div class="leg-dot avail" aria-hidden="true"></div>Disponible</div>
+      <div class="leg-item"><div class="leg-dot occ"   aria-hidden="true"></div>Ocupada</div>
+      <div class="leg-item"><div class="leg-dot sel"   aria-hidden="true"></div>Seleccionada</div>
+      <div class="leg-item"><div class="leg-dot lastav" aria-hidden="true"></div>Última disponible</div>
+    </div>
+  </div>
+
+</div><!-- /shell -->
+
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-card" id="modalCard">
+    <div class="modal-img" aria-hidden="true">
+      <span class="modal-img-label">Vista de la zona</span>
+    </div>
+    <div class="modal-body">
+      <div class="modal-zone-badge" id="modalBadge">Salón y Patio</div>
+      <h2 class="modal-title serif" id="modalTitle">Mesa 12</h2>
+      <div class="modal-meta-row">
+        <div class="modal-meta-item">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+          </svg>
+          <span id="modalCap">2 personas</span>
+        </div>
+        <div class="modal-meta-item">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          <span id="modalZone">Salón y Patio</span>
+        </div>
+      </div>
+      <div class="modal-vibe-card">
+        <div class="vibe-tag-pill" id="modalVibeTag">—</div>
+        <p class="vibe-text" id="modalVibeText">—</p>
+      </div>
+      <div class="modal-date-row" aria-label="Detalles de la reserva">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="18" rx="2"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        <span>Vie 13 Jun</span>
+        <span class="sep">·</span>
+        <span>21:00 hs</span>
+        <span class="sep">·</span>
+        <span id="modalDateCap">2 personas</span>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-gold" id="btnConfirm">Confirmar Reserva</button>
+        <button class="btn-outline" id="btnChooseOther">Elegir otra mesa</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRMATION -->
+<div class="confirm-overlay" id="confirmOverlay" role="dialog" aria-modal="true" aria-labelledby="confirmH">
+  <div class="confirm-card">
+    <div class="spark-ring" aria-hidden="true">
+      <svg viewBox="0 0 76 76" fill="none">
+        <circle cx="38" cy="38" r="26" stroke="rgba(212,175,55,0.22)" stroke-width="0.8"/>
+        <circle cx="38" cy="38" r="18" stroke="rgba(212,175,55,0.38)" stroke-width="0.5"/>
+        <!-- Flame -->
+        <path d="M38 20C38 20 35 26 32.5 28.5C30 31 28.5 31.5 28.5 33.5C28.5 37.5 32.5 40 38 40C43.5 40 47.5 37.5 47.5 33.5C47.5 31.5 46 31 43.5 28.5C41 26 38 20 38 20Z"
+          fill="rgba(212,175,55,0.15)" stroke="#D4AF37" stroke-width="0.8" stroke-linejoin="round"/>
+        <circle cx="38" cy="34" r="2.5" fill="#D4AF37"/>
+      </svg>
+      <div class="spark"></div>
+      <div class="spark"></div>
+      <div class="spark"></div>
+      <div class="spark"></div>
+      <div class="spark"></div>
+      <div class="spark"></div>
+      <div class="spark"></div>
+      <div class="spark"></div>
+    </div>
+
+    <p class="confirm-eyebrow">Reserva confirmada ✦</p>
+    <h2 class="confirm-h serif" id="confirmH">Te esperamos en<br>Khaosan</h2>
+    <p class="confirm-sub">Tu lugar en Bangkok ya está reservado.</p>
+
+    <div class="confirm-summary">
+      <div class="confirm-row">
+        <span class="c-label">Mesa</span>
+        <span class="c-val" id="cMesa">—</span>
+      </div>
+      <div class="confirm-row">
+        <span class="c-label">Zona</span>
+        <span class="c-val">Salón y Patio — El corazón del local</span>
+      </div>
+      <div class="confirm-row">
+        <span class="c-label">Fecha y hora</span>
+        <span class="c-val">Vie 13 Jun · 21:00 hs</span>
+      </div>
+      <div class="confirm-row">
+        <span class="c-label">Personas</span>
+        <span class="c-val" id="cPersonas">—</span>
+      </div>
+      <div class="confirm-row" id="cOcasionRow" style="display:none">
+        <span class="c-label">Ocasión</span>
+        <span class="c-val" id="cOcasion">—</span>
+      </div>
+    </div>
+
+    <div class="confirm-actions">
+      <button class="btn-confirm-close" id="btnConfirmClose">
+        Entendido — ¡Nos vemos esta noche!
+      </button>
+      <button class="btn-new" id="btnNewReserve">Hacer otra reserva</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── DATA ──────────────────────────────────────────── */
+const TABLES = [
+  // SALÓN — espina central (de arriba hacia abajo)
+  { id:12, x:47, y:3,  cap:2, shape:'round' },
+  { id:13, x:47, y:11, cap:2, shape:'round' },
+  { id:14, x:47, y:19, cap:2, shape:'round' },
+  { id:15, x:47, y:28, cap:2, shape:'round' },
+  { id:26, x:40, y:36, cap:2, shape:'round' },
+  { id:16, x:51, y:36, cap:4, shape:'square' },
+  { id:17, x:47, y:44, cap:4, shape:'square' },
+  { id:18, x:47, y:53, cap:4, shape:'square' },
+  // SALÓN — columna izquierda
+  { id:23, x:10, y:36, cap:4, shape:'square' },
+  { id:24, x:19, y:36, cap:2, shape:'round' },
+  { id:22, x:10, y:44, cap:2, shape:'round' },
+  { id:21, x:19, y:44, cap:2, shape:'round' },
+  { id:20, x:29, y:53, cap:2, shape:'round' },
+  { id:19, x:39, y:53, cap:2, shape:'round' },
+  // PATIO — bloque superior derecho (44/43, 45/42, 41)
+  { id:44, x:74, y:11, cap:2, shape:'round' },
+  { id:43, x:84, y:11, cap:2, shape:'round' },
+  { id:45, x:74, y:19, cap:2, shape:'round' },
+  { id:42, x:84, y:19, cap:2, shape:'round' },
+  { id:41, x:84, y:28, cap:4, shape:'square' },
+  // PATIO — centro (50, 9, 10)
+  { id:50, x:57, y:53, cap:2, shape:'round' },
+  { id:9,  x:67, y:53, cap:4, shape:'square' },
+  { id:10, x:84, y:53, cap:4, shape:'square' },
+  // PATIO — bloque central inferior (8/4, 7/5, 6)
+  { id:8,  x:52, y:62, cap:4, shape:'square' },
+  { id:4,  x:62, y:62, cap:4, shape:'square' },
+  { id:7,  x:52, y:70, cap:4, shape:'square' },
+  { id:5,  x:62, y:70, cap:4, shape:'square' },
+  { id:6,  x:46, y:78, cap:2, shape:'round' },
+  // PATIO — columna derecha inferior (32/3, 31/2, 30/1)
+  { id:32, x:74, y:62, cap:4, shape:'square' },
+  { id:3,  x:84, y:62, cap:4, shape:'square' },
+  { id:31, x:74, y:70, cap:4, shape:'square' },
+  { id:2,  x:84, y:70, cap:4, shape:'square' },
+  { id:30, x:74, y:78, cap:4, shape:'square' },
+  { id:1,  x:84, y:78, cap:4, shape:'square' },
+];
+
+const OCCUPIED = new Set([13, 15, 17, 26, 23, 9, 4, 7, 43, 42, 10, 3, 31, 1]);
+const LAST_AVAIL = new Set([6, 20]);
+
+const VIBES = {
+  12: ['En el corazón del salón',     'Desde acá se siente el pulso de Khaosan. Todo el local a la vista.'],
+  13: ['Con vista a toda la sala',    'La posición perfecta para quien quiere observar sin perderse nada.'],
+  14: ['Posición central',            'Desde acá se huele la cocina, se escucha el salón. El lugar más vivo de Khaosan.'],
+  15: ['En el flujo de Khaosan',      'Discreta pero conectada. Ideal para quienes quieren estar sin ser el centro.'],
+  16: ['Mesa amplia, espacio propio', 'Mesa para cuatro en el eje del salón. Buena energía, buena vista.'],
+  17: ['Centro del local',            'Zona central animada. Perfecta para grupos que buscan el ambiente.'],
+  18: ['Entre el salón y el patio',   'Una posición de transición: un pie en el salón, otro en el patio.'],
+  26: ['Rincón íntimo del patio',     'Cerca del aire libre pero al resguardo. Tranquilo y propio.'],
+  24: ['Lateral sereno',              'El mejor lugar para una charla larga y sin apuros.'],
+  23: ['Mesa grande junto al patio',  'Ideal para grupos con ganas de espacio y frescura.'],
+  22: ['El rincón más silencioso',    'La mesa más quieta del salón. Perfecta para dos.'],
+  21: ['Zona lateral relajada',       'Buena distancia del paso de camareros. Ambiente distendido.'],
+  20: ['Última disponible en el patio','Queda una sola. Rincón sereno, alejado del ruido central.'],
+  19: ['Cerca del patio',             'La brisa del patio llega hasta acá. Ambiente aireado y agradable.'],
+  50: ['Posición privilegiada',       'En el eje del local. Todo Khaosan pasa frente a esta mesa.'],
+   9: ['Zona animada',                'Centro inferior, dinámica. Para quienes disfrutan el ambiente.'],
+   8: ['Mesa central activa',         'Mesa generosa en la zona más viva del salón. Buena energía.'],
+   4: ['Cerca de la barra',           'Perfecta para grupos con ganas de moverse. El pulso de la barra, cerca.'],
+   7: ['Zona de buena compañía',      'El lugar de los que vienen a compartir de verdad. Animado y alegre.'],
+   5: ['Vista directa a la barra',    'Con vista al flujo de la barra. En el corazón de Khaosan Road.'],
+   6: ['Última del sector — íntima',  'La última mesa del sector central. Rincón tranquilo al fondo, para quienes buscan calma.'],
+  44: ['Junto al ventanal',           'Luz natural filtrada, vista hacia la calle. Una mesa con carácter.'],
+  43: ['Primera fila, ventanal',      'Mirás hacia afuera desde adentro de Khaosan. Una experiencia diferente.'],
+  45: ['Zona ventanal luminosa',      'Luminosa, con buen aire. Ideal para almuerzos y cenas tempranas.'],
+  42: ['Lateral con luz',             'Un poco de tu mundo, en el espacio de Khaosan.'],
+  41: ['Amplia, cerca del ventanal',  'Mesa grande con buena luz y proximidad al ventanal. Cómoda para charlas de negocios.'],
+  10: ['Buena visibilidad',           'Transición entre zonas. Ves el salón sin estar en el centro.'],
+  32: ['Zona íntima derecha',         'La zona más reservada del sector derecho. Quieta y propia.'],
+   3: ['Rincón al fondo',             'Ideal para una charla sin prisa. El fondo del salón te protege.'],
+  31: ['Privacidad casi total',       'Para quienes vienen a estar, a tomarse el tiempo.'],
+   2: ['El fondo tranquilo',          'Para tomarse el tiempo en Khaosan. La calma del fondo.'],
+  30: ['Rincón memorable',            'Uno de los últimos rincones del salón. Íntimo y memorable.'],
+   1: ['La más reservada de todas',   'La mesa más tranquila de Khaosan. La más propia. La más íntima.'],
+};
+
+const RECS = {
+  romantica:   [6, 22, 1],
+  cumpleanos:  [8, 5, 41],
+  amigos:      [7, 5, 4],
+  negocios:    [22, 41, 19],
+  sin_ocasion: [14, 50, 45],
+};
+
+const OCC_LABELS = {
+  romantica: 'Cena romántica', cumpleanos: 'Cumpleaños',
+  amigos: 'Con amigos', negocios: 'Negocios', sin_ocasion: 'Sin ocasión',
+};
+
+/* ── STATE ─────────────────────────────────────────── */
+let selTable  = null;
+let curOcc    = null;
+let curZone   = 'salon';
+
+/* ── RENDER ─────────────────────────────────────────── */
+function render(animate) {
+  const grp = document.getElementById('tablesGroup');
+  grp.innerHTML = '';
+
+  TABLES.forEach((t, i) => {
+    const isOcc = OCCUPIED.has(t.id);
+    const isSel = selTable === t.id;
+    const isLA  = LAST_AVAIL.has(t.id) && !isOcc;
+    const isRec = curOcc && RECS[curOcc]?.includes(t.id) && !isOcc;
+
+    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    g.setAttribute('transform', `translate(${t.x},${t.y})`);
+    g.classList.add('t-grp');
+    if (isOcc) g.classList.add('occupied');
+    if (isSel) g.classList.add('selected');
+    if (isLA)  g.classList.add('last-avail');
+    g.dataset.id = t.id;
+
+    if (animate) {
+      g.style.animationDelay = `${i * 22}ms`;
+    } else {
+      g.style.animation = 'none';
+    }
+
+    // Shape
+    let sh;
+    if (t.shape === 'round') {
+      sh = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      const r = t.cap <= 2 ? 2.5 : 3.2;
+      sh.setAttribute('cx', 0); sh.setAttribute('cy', 0); sh.setAttribute('r', r);
+    } else {
+      sh = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      const s = t.cap <= 2 ? 5.4 : 7.0;
+      sh.setAttribute('x', -s/2); sh.setAttribute('y', -s/2);
+      sh.setAttribute('width', s); sh.setAttribute('height', s);
+      sh.setAttribute('rx', '1');
+    }
+    sh.classList.add('t-shape');
+
+    // Colors
+    if (isOcc) {
+      sh.setAttribute('fill', '#252525');
+      sh.setAttribute('stroke', 'rgba(168,162,158,0.1)');
+      sh.setAttribute('stroke-width', '0.35');
+      sh.setAttribute('opacity', '0.6');
+    } else if (isSel) {
+      sh.setAttribute('fill', '#D4AF37');
+      sh.setAttribute('stroke', '#E5C158');
+      sh.setAttribute('stroke-width', '0.8');
+    } else if (isLA) {
+      sh.setAttribute('fill', 'rgba(14,14,14,0.9)');
+      sh.setAttribute('stroke', '#E5C158');
+      sh.setAttribute('stroke-width', '0.9');
+    } else {
+      sh.setAttribute('fill', 'rgba(14,14,14,0.88)');
+      sh.setAttribute('stroke', '#D4AF37');
+      sh.setAttribute('stroke-width', '0.6');
+    }
+    g.appendChild(sh);
+
+    // Label
+    const tx = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    tx.setAttribute('x', 0); tx.setAttribute('y', 0);
+    tx.setAttribute('text-anchor', 'middle');
+    tx.setAttribute('dominant-baseline', 'central');
+    tx.setAttribute('font-family', 'Inter,system-ui,sans-serif');
+    tx.setAttribute('font-size', t.id >= 10 ? '2.35' : '2.7');
+    tx.setAttribute('font-weight', '500');
+    tx.setAttribute('fill', isOcc ? 'rgba(168,162,158,0.22)' : isSel ? '#080808' : '#F5F0E6');
+    tx.setAttribute('pointer-events', 'none');
+    tx.textContent = t.id;
+    g.appendChild(tx);
+
+    // Recommended star
+    if (isRec) {
+      const br = t.shape === 'round' ? (t.cap<=2?2.5:3.2)+0.4 : (t.cap<=2?2.7:3.5)+0.2;
+      const bc = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      bc.setAttribute('cx', br); bc.setAttribute('cy', -br); bc.setAttribute('r', '2.0');
+      bc.setAttribute('fill', '#8C6D1F'); bc.setAttribute('stroke', '#D4AF37'); bc.setAttribute('stroke-width', '0.4');
+      const bs = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      bs.setAttribute('x', br); bs.setAttribute('y', -br);
+      bs.setAttribute('text-anchor', 'middle'); bs.setAttribute('dominant-baseline', 'central');
+      bs.setAttribute('font-size', '1.7'); bs.setAttribute('fill', '#F5F0E6');
+      bs.setAttribute('pointer-events', 'none'); bs.textContent = '★';
+      g.appendChild(bc); g.appendChild(bs);
+    }
+
+    // Interaction
+    if (!isOcc) {
+      g.setAttribute('tabindex', '0');
+      g.setAttribute('role', 'button');
+      g.setAttribute('aria-label', `Mesa ${t.id} — ${VIBES[t.id]?.[0] || 'disponible'}`);
+      g.style.cursor = 'pointer';
+      g.addEventListener('click', () => selectTable(t.id));
+      g.addEventListener('keydown', e => {
+        if (e.key==='Enter'||e.key===' ') { e.preventDefault(); selectTable(t.id); }
+      });
+    } else {
+      g.setAttribute('aria-label', `Mesa ${t.id} — ocupada`);
+      g.setAttribute('aria-disabled', 'true');
+    }
+
+    grp.appendChild(g);
+  });
+}
+
+/* ── SELECT ─────────────────────────────────────────── */
+function selectTable(id) {
+  if (OCCUPIED.has(id)) return;
+  selTable = id;
+  render(false);
+  openModal(id);
+}
+
+/* ── MODAL ──────────────────────────────────────────── */
+function openModal(id) {
+  const t = TABLES.find(x => x.id === id);
+  if (!t) return;
+  const [tag, detail] = VIBES[id] || ['Mesa disponible',''];
+  const isLA = LAST_AVAIL.has(id);
+
+  document.getElementById('modalTitle').textContent    = `Mesa ${id}`;
+  document.getElementById('modalBadge').textContent    = isLA ? '⚑ Última disponible en este sector' : 'Salón y Patio — El corazón del local';
+  document.getElementById('modalCap').textContent      = t.cap <= 2 ? '2 personas' : `hasta ${t.cap} personas`;
+  document.getElementById('modalDateCap').textContent  = t.cap <= 2 ? '2 personas' : `hasta ${t.cap} personas`;
+  document.getElementById('modalVibeTag').textContent  = tag;
+  document.getElementById('modalVibeText').textContent = detail;
+
+  document.getElementById('modalBg').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modalBg').classList.remove('open');
+  selTable = null;
+  render(false);
+}
+
+/* ── CONFIRM ─────────────────────────────────────────── */
+function confirmReservation() {
+  const t = TABLES.find(x => x.id === selTable);
+  if (!t) return;
+  document.getElementById('cMesa').textContent    = `Mesa ${selTable} — ${VIBES[selTable]?.[0]||''}`;
+  document.getElementById('cPersonas').textContent = t.cap <= 2 ? '2 personas' : `hasta ${t.cap} personas`;
+  const row = document.getElementById('cOcasionRow');
+  if (curOcc) {
+    row.style.display = '';
+    document.getElementById('cOcasion').textContent = OCC_LABELS[curOcc];
+  } else {
+    row.style.display = 'none';
+  }
+  document.getElementById('modalBg').classList.remove('open');
+  document.getElementById('confirmOverlay').classList.add('open');
+}
+
+/* ── ZONE SWITCH ─────────────────────────────────────── */
+function switchZone(zone) {
+  curZone = zone;
+  document.querySelectorAll('.zone-tab').forEach(b => {
+    const active = b.dataset.zone === zone;
+    b.classList.toggle('active', active);
+    b.setAttribute('aria-selected', active);
+  });
+  document.getElementById('zone-salon').classList.toggle('visible', zone==='salon');
+  document.getElementById('zone-salon').classList.toggle('hidden',  zone!=='salon');
+  document.getElementById('zone-galeria').classList.toggle('visible', zone==='galeria');
+  document.getElementById('zone-galeria').classList.toggle('hidden',  zone!=='galeria');
+  if (zone === 'salon') render(true);
+}
+
+/* ── OCCASION ────────────────────────────────────────── */
+function toggleOccasion(occ, el) {
+  const allPills = document.querySelectorAll('.occ-pill');
+  if (curOcc === occ) {
+    curOcc = null;
+    allPills.forEach(p => { p.classList.remove('active'); p.setAttribute('aria-pressed','false'); });
+  } else {
+    curOcc = occ;
+    allPills.forEach(p => { p.classList.remove('active'); p.setAttribute('aria-pressed','false'); });
+    el.classList.add('active');
+    el.setAttribute('aria-pressed','true');
+  }
+  render(false);
+}
+
+/* ── INIT ─────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  render(true);
+
+  // Occasion pills
+  document.querySelectorAll('.occ-pill').forEach(btn => {
+    btn.addEventListener('click', () => toggleOccasion(btn.dataset.occ, btn));
+  });
+
+  // Zone tabs
+  document.querySelectorAll('.zone-tab').forEach(btn => {
+    btn.addEventListener('click', () => switchZone(btn.dataset.zone));
+  });
+
+  // Modal close on backdrop
+  document.getElementById('modalBg').addEventListener('click', e => {
+    if (e.target === document.getElementById('modalBg')) closeModal();
+  });
+
+  document.getElementById('btnChooseOther').addEventListener('click', closeModal);
+  document.getElementById('btnConfirm').addEventListener('click', confirmReservation);
+
+  document.getElementById('btnConfirmClose').addEventListener('click', () => {
+    document.getElementById('confirmOverlay').classList.remove('open');
+    selTable = null;
+    render(false);
+  });
+
+  document.getElementById('btnNewReserve').addEventListener('click', () => {
+    document.getElementById('confirmOverlay').classList.remove('open');
+    selTable = null;
+    curOcc   = null;
+    document.querySelectorAll('.occ-pill').forEach(p => {
+      p.classList.remove('active'); p.setAttribute('aria-pressed','false');
+    });
+    render(true);
+  });
+
+  // FUDO sync blink
+  document.getElementById('fudoBtn').addEventListener('click', () => {
+    const dot = document.getElementById('fudoDot');
+    dot.style.background = '#facc15';
+    setTimeout(() => { dot.style.background = '#4ade80'; }, 1400);
+  });
+
+  // Keyboard ESC
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      if (document.getElementById('confirmOverlay').classList.contains('open')) {
+        document.getElementById('confirmOverlay').classList.remove('open');
+        selTable = null; render(false);
+      } else if (document.getElementById('modalBg').classList.contains('open')) {
+        closeModal();
+      }
+    }
+  });
+});
+</script>
+</body>
+</html>
